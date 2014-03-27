@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+
+    <title>登陆|对眼恋爱-专注于解决各类攻城狮的单身问题</title>
+    <meta content="对眼恋爱是专注于解决攻城狮和程序媛的单身问题的严肃婚恋网站" name="description">
+    <meta content="恋爱,单身,婚恋,找对象,找男朋友,找女朋友" name="keywords">
+
+    <link rel="Shortcut Icon" href="static/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+
+    <script src="static/js/jquery.min.js"></script>
+    <!--[if lte IE 8]>
+    <script type="text/javascript" src="static/js/excanvas.js"></script>
+<![endif]-->
+</head>
+
+<body id="login_bg">
+    <div class="login_wrapper">
+        <div class="login_header">
+            <a href="http://www.duiyanlove.com/">
+                <img src="static/images/logo_white.png" width="285" height="62" alt="拉勾招聘">
+            </a>
+            <div id="cloud_s" style="margin-left: -5.115719064994259px;">
+                <img src="static/images/cloud_s.png" width="81" height="52" alt="cloud">
+            </div>
+            <div id="cloud_m" style="margin-left: 5.115719064994259px;">
+                <img src="static/images/cloud_m.png" width="136" height="95" alt="cloud">
+            </div>
+        </div>
+
+        <input type="hidden" id="resubmitToken" value="ff80808144de284d0144e3b73dfa0e13">
+        <div class="login_box">
+            <form id="loginForm">
+                <ul class="register_radio clearfix">
+                    <li>
+                        找工作
+                        <input type="radio" value="0" name="type">
+                    </li>
+                    <li>
+                        招人
+                        <input type="radio" value="1" name="type">
+                    </li>
+                </ul>
+                <input type="text" id="email" name="email" tabindex="1" placeholder="请输入常用邮箱地址">
+                <span class="error" style="display:none;" id="beError"></span>
+                <input type="password" id="password" name="password" tabindex="2" placeholder="请输入密码">
+                <label class="fl" for="checkbox">
+                    <input type="checkbox" id="checkbox" name="checkbox" checked="" class="checkbox valid">我已阅读并同意<a href="http://www.lagou.com/privacy.html" target="_blank">《拉勾用户协议》</a>
+                </label>
+                <input type="submit" id="submitLogin" value="注     册">
+            </form>
+            <div class="login_right">
+                <div>还没有拉勾帐号？</div>
+                <a href="/register" class="registor_now">立即注册</a>
+                <div class="login_others">使用以下帐号直接登录:</div>
+                <a href="#" target="_blank" class="icon_wb" title="使用新浪微博帐号登录"></a>
+                <a href="#" class="icon_qq" target="_blank" title="使用腾讯QQ帐号登录"></a>
+            </div>
+        </div>
+        <div class="login_box_btm"></div>
+    </div>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.register_radio li input').click(function(e) {
+            $(this).parent('li').addClass('current').append('<em></em>').siblings().removeClass('current').find('em').remove();
+        });
+
+        $('#email').focus(function() {
+            $('#beError').hide();
+        });
+        //验证表单
+        $("#loginForm").validate({
+            rules: {
+                type: {
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    rangelength: [6, 18]
+                },
+                checkbox: {
+                    required: true
+                }
+            },
+            messages: {
+                type: {
+                    required: "请选择使用拉勾的目的"
+                },
+                email: {
+                    required: "请输入常用邮箱地址",
+                    email: "请输入有效的邮箱地址，如：vivi@lagou.com"
+                },
+                password: {
+                    required: "请输入密码",
+                    rangelength: "请输入6-16位密码，字母区分大小写"
+                },
+                checkbox: {
+                    required: "请接受拉勾用户协议"
+                }
+            },
+            errorPlacement: function(label, element) {
+                if (element.attr("type") == "radio") {
+                    label.insertAfter($(element).parents('ul')).css('marginTop', '-20px');
+                } else if (element.attr("type") == "checkbox") {
+                    label.insertAfter($(element).parent()).css('clear', 'left');
+                } else {
+                    label.insertAfter(element);
+                }
+            },
+            submitHandler: function(form) {
+                var type = $('input[type="radio"]:checked', form).val();
+                var email = $('#email').val();
+                var password = $('#password').val();
+                var resubmitToken = $('#resubmitToken').val();
+                $(form).find(":submit").attr("disabled", true);
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        email: email,
+                        password: password,
+                        type: type,
+                        resubmitToken: resubmitToken
+                    },
+                    url: ctx + '/user/register.json'
+                }).done(function(result) {
+                    $('#resubmitToken').val(result.resubmitToken);
+                    if (result.success) {
+                        window.location.href = result.content;
+                    } else {
+                        $('#beError').text(result.msg).show();
+                    }
+                    $(form).find(":submit").attr("disabled", false);
+                });
+            }
+        });
+    });
+    </script>
+
+
+    <div id="cboxOverlay" style="display: none;"></div>
+    <div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;">
+        <div id="cboxWrapper">
+            <div>
+                <div id="cboxTopLeft" style="float: left;"></div>
+                <div id="cboxTopCenter" style="float: left;"></div>
+                <div id="cboxTopRight" style="float: left;"></div>
+            </div>
+            <div style="clear: left;">
+                <div id="cboxMiddleLeft" style="float: left;"></div>
+                <div id="cboxContent" style="float: left;">
+                    <div id="cboxTitle" style="float: left;"></div>
+                    <div id="cboxCurrent" style="float: left;"></div>
+                    <button type="button" id="cboxPrevious"></button>
+                    <button type="button" id="cboxNext"></button>
+                    <button id="cboxSlideshow"></button>
+                    <div id="cboxLoadingOverlay" style="float: left;"></div>
+                    <div id="cboxLoadingGraphic" style="float: left;"></div>
+                </div>
+                <div id="cboxMiddleRight" style="float: left;"></div>
+            </div>
+            <div style="clear: left;">
+                <div id="cboxBottomLeft" style="float: left;"></div>
+                <div id="cboxBottomCenter" style="float: left;"></div>
+                <div id="cboxBottomRight" style="float: left;"></div>
+            </div>
+        </div>
+        <div style="position: absolute; width: 9999px; visibility: hidden; display: none;"></div>
+    </div>
+</body>
+
+</html>

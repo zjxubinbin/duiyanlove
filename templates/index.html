@@ -1,3 +1,16 @@
-{%for x in mongodbInfo%}
-{{x}}
-{%endfor%}
+{%extends 'base.html'%}
+{%block sidebar%}<div class="ui three column grid">
+  <div class="column">
+      <div class="ui fluid form segment">
+          <h3 class="ui header">登录</h3>
+          <div class="field">
+              <label>用户名</label>
+              <input placeholder="用户名" type="text">
+          </div>
+          <div class="field">
+              <label>密码</label>
+              <input type="password">
+          </div>
+          <div class="ui blue submit button">登录</div>
+      </div>
+  </div>{%endblock%}

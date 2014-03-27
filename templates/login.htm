@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+
+    <title>登陆|对眼恋爱-专注于解决各类攻城狮的单身问题</title>
+    <meta content="对眼恋爱是专注于解决攻城狮和程序媛的单身问题的严肃婚恋网站" name="description">
+    <meta content="恋爱,单身,婚恋,找对象,找男朋友,找女朋友" name="keywords">
+
+    <link rel="Shortcut Icon" href="static/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+
+    <script src="static/js/jquery.min.js"></script>
+    <!--[if lte IE 8]>
+    <script type="text/javascript" src="static/js/excanvas.js"></script>
+<![endif]-->
+</head>
+
+<body id="login_bg">
+    <div class="login_wrapper">
+        <div class="login_header">
+            <a href="http://www.duiyanlove.com/">
+                <img src="static/images/logo_white.png" width="285" height="62" alt="对眼恋爱">
+            </a>
+            <div id="cloud_s" style="margin-left: -18.29513907161497px;">
+                <img src="static/images/cloud_s.png" width="81" height="52" alt="cloud">
+            </div>
+            <div id="cloud_m" style="margin-left: 18.29513907161497px;">
+                <img src="static/images/cloud_m.png" width="136" height="95" alt="cloud">
+            </div>
+        </div>
+
+        <input type="hidden" id="resubmitToken" value="">
+        <div class="login_box">
+            <form id="loginForm">
+                <input type="text" id="email" name="email" value="" tabindex="1" placeholder="请输入登录邮箱地址" class="valid">
+                <input type="password" id="password" name="password" tabindex="2" placeholder="请输入密码" class="valid">
+                <span class="error" style="display: none;" id="beError"></span>
+                <label class="fl" for="remember">
+                    <input type="checkbox" id="remember" value="" checked="checked" name="autoLogin">记住我</label>
+                <a href="/forgetPassWord" class="fr" target="_blank">忘记密码？</a>
+                <input type="submit" id="submitLogin" value="登     录">
+            </form>
+            <div class="login_right">
+                <div>还没有拉勾帐号？</div>
+                <a href="/register" class="registor_now">立即注册</a>
+                <div class="login_others">使用以下帐号直接登录:</div>
+                <a href="#" target="_blank" class="icon_wb" title="使用新浪微博帐号登录"></a>
+                <a href="#" class="icon_qq" target="_blank" title="使用腾讯QQ帐号登录"></a>
+            </div>
+        </div>
+        <div class="login_box_btm"></div>
+    </div>
+
+    <script type="text/javascript">
+    $(function() {
+        //验证表单
+        $("#loginForm").validate({
+            onkeyup: false,
+            focusCleanup: true,
+            rules: {
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true
+                }
+            },
+            messages: {
+                email: {
+                    required: "请输入登录邮箱地址",
+                    email: "请输入有效的邮箱地址，如：vivi@lagou.com"
+                },
+                password: {
+                    required: "请输入密码"
+                }
+            },
+            submitHandler: function(form) {
+                if ($('#remember').prop("checked")) {
+                    $('#remember').val(1);
+                } else {
+                    $('#remember').val(null);
+                }
+                var email = $('#email').val();
+                var password = $('#password').val();
+                var remember = $('#remember').val();
+                $(form).find(":submit").attr("disabled", true);
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        email: email,
+                        password: password,
+                        autoLogin: remember
+                    },
+                    url: ctx + '/user/login.json'
+                }).done(function(result) {
+                    if (result.success) {
+                        if (result.content.loginToUrl) {
+                            window.location.href = result.content.loginToUrl;
+                        } else {
+                            window.location.href = ctx + '/';
+                        }
+                    } else {
+                        $('#beError').text(result.msg).show();
+                    }
+                    $(form).find(":submit").attr("disabled", false);
+                });
+            }
+        });
+    })
+    </script>
+
+    <div id="cboxOverlay" style="display: none;"></div>
+    <div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;">
+        <div id="cboxWrapper">
+            <div>
+                <div id="cboxTopLeft" style="float: left;"></div>
+                <div id="cboxTopCenter" style="float: left;"></div>
+                <div id="cboxTopRight" style="float: left;"></div>
+            </div>
+            <div style="clear: left;">
+                <div id="cboxMiddleLeft" style="float: left;"></div>
+                <div id="cboxContent" style="float: left;">
+                    <div id="cboxTitle" style="float: left;"></div>
+                    <div id="cboxCurrent" style="float: left;"></div>
+                    <button type="button" id="cboxPrevious"></button>
+                    <button type="button" id="cboxNext"></button>
+                    <button id="cboxSlideshow"></button>
+                    <div id="cboxLoadingOverlay" style="float: left;"></div>
+                    <div id="cboxLoadingGraphic" style="float: left;"></div>
+                </div>
+                <div id="cboxMiddleRight" style="float: left;"></div>
+            </div>
+            <div style="clear: left;">
+                <div id="cboxBottomLeft" style="float: left;"></div>
+                <div id="cboxBottomCenter" style="float: left;"></div>
+                <div id="cboxBottomRight" style="float: left;"></div>
+            </div>
+        </div>
+        <div style="position: absolute; width: 9999px; visibility: hidden; display: none;"></div>
+    </div>
+</body>
+
+</html>

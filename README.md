@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 欢迎使用WSGI应用，请遵循以下规则！
 
 	.应用的依赖项应该放到requirements.txt文件中。
@@ -5,3 +6,7 @@
 
 祝您使用愉快！
 
+=======
+duiyanlove
+==========
+>>>>>>> refs/remotes/origin/master
